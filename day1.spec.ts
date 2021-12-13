@@ -1,4 +1,4 @@
-import {countAscending, parseInput, part1, readInput, tripleSums} from "./day1";
+import {countAscending, parseInput, readInput, tripleSums} from "./day1";
 
 const example = '199\n' +
     '200\n' +

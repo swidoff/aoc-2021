@@ -10,30 +10,25 @@ export function parseInput(input: string): number[] {
 }
 
 export function countAscending(depths: number[]): number {
-    const [total, last] = depths.reduce(
-        (prev: number[], current: number, currentIndex: number, array: number[]) => {
-            const [total, last] = prev;
-            let newTotal = current > last ? total + 1 : total;
-            return [newTotal, current]
-        }, [0, 1e6])
-    return total;
+    return depths.reduce(
+        (count: number, current: number, currentIndex: number, array: number[]) => {
+            return currentIndex > 0 && array[currentIndex] > array[currentIndex - 1] ? count + 1 : count;
+        }, 0);
 }
 
 export function tripleSums(depths: number[]): number[] {
-    return depths.reduce(
-        (sums: number[], current: number, currentIndex: number, array: number[]) => {
-            if (currentIndex >= 2) {
-                let sum = 0;
-                for (let j = currentIndex - 2; j <= currentIndex; j++) {
-                    sum += array[j];
-                }
-                sums.push(sum);
+    const [sums, _buf, _sum] = depths.reduce(
+        (prev, current: number) => {
+            const [sums, buf, sum] = prev;
+            let newSum = sum + current;
+            buf.push(current);
+            if (buf.length > 3) {
+                newSum -= buf.shift()!;
             }
-            return sums;
-        }, new Array<number>())
-}
-
-export function part1(): number {
-    const input = readInput();
-    return countAscending(input);
+            if (buf.length == 3) {
+                sums.push(newSum)
+            }
+            return [sums, buf, newSum];
+        }, [new Array<number>(), new Array<number>(), 0]);
+    return sums;
 }
