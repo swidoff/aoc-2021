@@ -17,9 +17,10 @@ export function simulateLanternFish(timerCounts: number[], days: number = 80): n
     for (let day = 0; day < days; day++) {
         let newTimerCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-        newTimerCounts[6] = timerCounts[0];
-        newTimerCounts[8] = timerCounts[0];
+        newTimerCounts[6] = timerCounts[0]; // Counters reset after 0.
+        newTimerCounts[8] = timerCounts[0]; // New lantern fish are born.
 
+        // Decrement all other counters.
         for (let i = 1; i <= 8; i++) {
             newTimerCounts[i - 1] += timerCounts[i];
         }
