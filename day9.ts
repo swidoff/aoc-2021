@@ -67,6 +67,6 @@ export function prodOfBasinSizes(heightMap: number[][]): number {
         }
     }
 
-    basins = basins.sort((a, b) => a - b)
+    basins = basins.sort((a, b) => a - b);
     return basins.pop()! * basins.pop()! * basins.pop()!;
 }
