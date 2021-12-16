@@ -43,8 +43,7 @@ export function fold1(input: Input): Input {
         Some: fold => {
             return {
                 dots: input.dots.map(dot => {
-                        let x = dot.get(0).getOrThrow();
-                        let y = dot.get(1).getOrThrow();
+                        let [x, y] = dot.toArray()
                         if (fold.axis == "x") {
                             return x <= fold.value ? dot : Vector.of(fold.value - (x - fold.value), y);
                         } else {
@@ -68,8 +67,8 @@ export function foldN(input: Input): Input {
 }
 
 export function printDots(dots: HashSet<Vector<number>>) {
-    let maxX = dots.maxOn(v => v.get(0).getOrThrow()).getOrThrow().get(0).getOrThrow();
-    let maxY = dots.maxOn(v => v.get(1).getOrThrow()).getOrThrow().get(1).getOrThrow();
+    let maxX = dots.map(v => v.toArray()[0]).maxOn(v => v).getOrThrow();
+    let maxY = dots.map(v => v.toArray()[1]).maxOn(v => v).getOrThrow();
 
     let rows = [];
     for (let y = 0; y <= maxY; y++) {
