@@ -12,6 +12,7 @@ let example1 = parseInput("1163751742\n" +
     "2311944581");
 
 
+
 test('part1 example', () => {
     expect(lowestTotalRisk(new SimpleCave(example1))).toEqual(40);
 })
@@ -25,5 +26,5 @@ test('part2 example', () => {
 })
 
 test('part2', () => {
-    expect(lowestTotalRisk(new ExtendedCave(parseInput(readInput())))).toEqual(702);
+    expect(lowestTotalRisk(new ExtendedCave(parseInput(readInput())))).toEqual(2955);
 })

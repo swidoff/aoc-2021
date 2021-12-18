@@ -19,6 +19,7 @@
   "dependencies": {
       "@types/lodash": "^4.14.178",
       "lodash": "^4.17.21",
-      "prelude-ts": "^1.0.3"
+      "prelude-ts": "^1.0.3",
+      "ts-priority-queue": "^0.1.1"
   }
 }

@@ -1,5 +1,6 @@
 import {readFileSync} from "fs";
-import {HashMap, HashSet, Vector} from "prelude-ts";
+import {HashMap, Vector} from "prelude-ts";
+import PriorityQueue from "ts-priority-queue/src/PriorityQueue";
 
 export function readInput(): string {
     const buf = readFileSync("inputs/day15.txt");
@@ -12,7 +13,6 @@ export function parseInput(input: string): number[][] {
 
 interface Cave {
     dim: number
-
     risk(r: number, c: number): number
 }
 
@@ -46,17 +46,19 @@ export class ExtendedCave implements Cave {
     }
 }
 
+type Point = Vector<number>;
+
 /** This is just Dijkstra's shortest path algorithm... */
 export function lowestTotalRisk(cave: Cave): number {
-    let origin = Vector.of(0, 0);
-    let q = HashSet.of(origin)
-    let risk = HashMap.of([origin, 0]);
-    let seen = HashSet.empty();
     const n = cave.dim;
+    let origin = Vector.of(0, 0);
+    let risk = HashMap.of([origin, 0]);
+    let q = new PriorityQueue<[Point, number]>({comparator: (v1, v2) => v1[1] - v2[1]})
+    q.queue([origin, 0]);
 
     let res = 0
-    while (!q.isEmpty()) {
-        let pt = q.minOn(v => risk.get(v).getOrThrow()).getOrThrow();
+    while (q.length > 0) {
+        let [pt, totalRisk] = q.dequeue();
         let [r, c] = pt.toArray();
 
         if (r == n - 1 && c == n - 1) {
@@ -64,20 +66,13 @@ export function lowestTotalRisk(cave: Cave): number {
             break;
         }
 
-        q = q.remove(pt);
-
-        if (seen.contains(pt)) {
-            continue;
-        }
-        seen = seen.add(pt);
-
-        for (let [nr, nc] of [[r + 1, c], [r, c + 1]/*, [r - 1, c], [r, c - 1]*/]) {
+        for (let [nr, nc] of [[r + 1, c], [r, c + 1], [r - 1, c], [r, c - 1]]) {
             let newPt = Vector.of(nr, nc);
-            if (/*nr >= 0 && nc >= 0 && */nr < n && nc < n) {
+            if (nr >= 0 && nc >= 0 && nr < n && nc < n) {
                 let newRisk = risk.get(pt).getOrThrow() + cave.risk(nr, nc);
                 if (newRisk < risk.get(newPt).getOrElse(1e100)) {
                     risk = risk.put(newPt, newRisk);
-                    q = q.add(newPt);
+                    q.queue([newPt, newRisk]);
                 }
             }
         }
