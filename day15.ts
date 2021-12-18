@@ -62,7 +62,7 @@ export function lowestTotalRisk(cave: Cave): number {
         let [r, c] = pt.toArray();
 
         if (r == n - 1 && c == n - 1) {
-            res = risk.get(pt).getOrThrow();
+            res = totalRisk;
             break;
         }
 
