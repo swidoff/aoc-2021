@@ -86,6 +86,10 @@ export function magnitude(n: Token[]): number {
     return <number>n[0];
 }
 
+export function sum(numbers: Token[][]): Token[] {
+    return numbers.reduce((n1, n2) => add(n1, n2));
+}
+
 export function largestMagnitudeSumOfPairs(numbers: Token[][]): number {
     let max = 0;
     for (let i = 0; i < numbers.length; i++) {

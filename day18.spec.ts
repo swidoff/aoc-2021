@@ -1,4 +1,4 @@
-import {add, explode, largestMagnitudeSumOfPairs, magnitude, parseInput, parseInputLine, readInput} from "./day18";
+import {add, explode, largestMagnitudeSumOfPairs, magnitude, parseInput, parseInputLine, readInput, sum} from "./day18";
 
 function checkExplode(input: string, output: string) {
     let s = parseInputLine(input);
@@ -23,14 +23,14 @@ test('part1 add', () => {
         "[2,2]\n" +
         "[3,3]\n" +
         "[4,4]";
-    expect(parseInput(example1).reduce((n1, n2) => add(n1, n2)).join("")).toEqual("[[[[1,1],[2,2]],[3,3]],[4,4]]");
+    expect(sum(parseInput(example1)).join("")).toEqual("[[[[1,1],[2,2]],[3,3]],[4,4]]");
 
     let example2 = "[1,1]\n" +
         "[2,2]\n" +
         "[3,3]\n" +
         "[4,4]\n" +
         "[5,5]";
-    expect(parseInput(example2).reduce((n1, n2) => add(n1, n2)).join("")).toEqual("[[[[3,0],[5,3]],[4,4]],[5,5]]");
+    expect(sum(parseInput(example2)).join("")).toEqual("[[[[3,0],[5,3]],[4,4]],[5,5]]");
 
     let example3 = "[1,1]\n" +
         "[2,2]\n" +
@@ -38,7 +38,7 @@ test('part1 add', () => {
         "[4,4]\n" +
         "[5,5]\n" +
         "[6,6]";
-    expect(parseInput(example3).reduce((n1, n2) => add(n1, n2)).join("")).toEqual("[[[[5,0],[7,4]],[5,5]],[6,6]]");
+    expect(sum(parseInput(example3)).join("")).toEqual("[[[[5,0],[7,4]],[5,5]],[6,6]]");
 
     let example4 = "[[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]\n" +
         "[7,[[[3,7],[4,3]],[[6,3],[8,8]]]]\n" +
@@ -50,7 +50,7 @@ test('part1 add', () => {
         "[1,[[[9,3],9],[[9,0],[0,7]]]]\n" +
         "[[[5,[7,4]],7],1]\n" +
         "[[[[4,2],2],6],[8,7]]";
-    expect(parseInput(example4).reduce((n1, n2) => add(n1, n2)).join("")).toEqual("[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]");
+    expect(sum(parseInput(example4)).join("")).toEqual("[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]");
 })
 
 
