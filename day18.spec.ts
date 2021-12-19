@@ -1,4 +1,4 @@
-import {add, explode, largestMagnitudeSumOfPairs, magnitude, parseInput, parseInputLine, readInput, sum} from "./day18";
+import {add, explode, largestMagnitudeOfPairSum, magnitude, parseInput, parseInputLine, readInput, sum} from "./day18";
 
 function checkExplode(input: string, output: string) {
     let s = parseInputLine(input);
@@ -96,9 +96,9 @@ test("part 2 example", () => {
         "[[9,3],[[9,9],[6,[4,9]]]]\n" +
         "[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]\n" +
         "[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]";
-    expect(largestMagnitudeSumOfPairs(parseInput(example))).toEqual(3993)
+    expect(largestMagnitudeOfPairSum(parseInput(example))).toEqual(3993)
 })
 
 test("part 2", () => {
-    expect(largestMagnitudeSumOfPairs(parseInput(readInput()))).toEqual(4784)
+    expect(largestMagnitudeOfPairSum(parseInput(readInput()))).toEqual(4784)
 })
