@@ -14,11 +14,7 @@ export function parseInput(input: string): Token[][] {
 
 export function parseInputLine(input: string): Token[] {
     return input.split("").map(c => {
-        if (c === "[" || c === "," || c === "]") {
-            return c;
-        } else {
-            return parseInt(c);
-        }
+        return c === "[" || c === "," || c === "]" ? c : parseInt(c);
     });
 }
 
@@ -30,7 +26,6 @@ export function add(n1: Token[], n2: Token[]): Token[] {
 
 export function explode(n: Token[]): boolean {
     let level = 0;
-    let exploded = false;
     for (let i = 0; i < n.length; i++) {
         let c = n[i]
         if (c === "[") {
@@ -58,26 +53,23 @@ export function explode(n: Token[]): boolean {
                 }
             }
             n.splice(i - 1, 5, 0);
-            exploded = true;
-            break;
+            return true;
         }
     }
-    return exploded;
+    return false;
 }
 
 export function split(n: Token[]): boolean {
-    let split = false;
     for (let i = 0; i < n.length; i++) {
         let c = n[i]
         if (typeof c === "number" && c > 9) {
             let l = Math.floor(c / 2);
             let r = Math.ceil(c / 2);
             n.splice(i, 1, "[", l, ",", r, "]");
-            split = true;
-            break;
+            return true;
         }
     }
-    return split;
+    return false;
 }
 
 export function magnitude(n: Token[]): number {
