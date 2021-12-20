@@ -11,9 +11,9 @@ type Point = Vector<number>
 type Input = {
     algo: string
     image: HashMap<Point, string>
-    dim: number,
+    dim: number
     offset: number
-    lit: number,
+    lit: number
 }
 
 export function parseInput(input: string): Input {
@@ -26,7 +26,7 @@ export function parseInput(input: string): Input {
     for (let r = 0; r < lines.length; r++) {
         for (let c = 0; c < lines.length; c++) {
             let char = lines[r].charAt(c);
-            if (char == "#") {
+            if (char === "#") {
                 lit++;
             }
             image = image.put(Vector.of(r, c), char);
@@ -36,7 +36,7 @@ export function parseInput(input: string): Input {
 }
 
 function defaultCharFor(algo: string, offset: number): string {
-    if (algo.charAt(0) == "#") {
+    if (algo.charAt(0) === "#") {
         // The pixels off the image toggle with each enhancement.
         return offset % 2 == 1 ? "#" : ".";
     } else {
@@ -60,7 +60,7 @@ export function enhance(input: Input): Input {
                 }
             }
             let char = input.algo.charAt(index);
-            if (char == "#") {
+            if (char === "#") {
                 lit++;
             }
             newImage = newImage.put(Vector.of(r, c), char);
