@@ -7,7 +7,8 @@ export function readInput(): string {
 }
 
 export class Point implements HasEquals {
-    constructor(readonly x: number, readonly y: number, readonly z: number) {
+    constructor(readonly x: number, readonly y: number, readonly z: number, private readonly hash: number = 0) {
+        this.hash = fieldsHashCode(this.x, this.y, this.z);
     }
 
     equals(other: any): boolean {
@@ -15,7 +16,7 @@ export class Point implements HasEquals {
     }
 
     hashCode(): number {
-        return fieldsHashCode(this.x, this.y, this.z);
+        return this.hash;
     }
 }
 

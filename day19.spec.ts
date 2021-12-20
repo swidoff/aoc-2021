@@ -1,13 +1,4 @@
-import {
-    alignBeaconsTo,
-    countBeacons,
-    maxScannerDistance,
-    overlaps,
-    parseInput,
-    Point,
-    readInput,
-    transformBeacons
-} from "./day19";
+import {countBeacons, maxScannerDistance, overlaps, parseInput, readInput, transformBeacons} from "./day19";
 import {HashSet} from "prelude-ts";
 
 test('part1 overlaps', () => {
@@ -23,9 +14,6 @@ test('part1 overlaps', () => {
 
     let scanners = parseInput(example);
     let beacons = HashSet.ofIterable(scanners[0]);
-    let res1 = alignBeaconsTo(scanners[1], new Point(3, 3, 0), new Point(-2, 1, 0));
-    expect(res1).toEqual(beacons);
-
     let res2 = overlaps(beacons, scanners[1], 3);
     expect(res2.overlaps).toEqual(true);
     expect(res2.beacons).toEqual(beacons);
