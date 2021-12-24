@@ -79,10 +79,12 @@ export function orderAmphipods(initial: State): number {
 
             // Move room amphipods into the hallway.
             for (let room = 0; room < state.rooms.length; room++) {
+                // The row is already complete
                 if (_.every(state.rooms[room], r => r == room)) {
                     continue;
                 }
 
+                // Move from the top of the room to a free hallway space.
                 for (let pos = state.rooms[room].length - 1; pos >= 0; pos--) {
                     if (state.rooms[room][pos] > -1 && (pos > 0 || state.rooms[room][pos] != room)) {
                         for (let hallway of [0, 1, 3, 5, 7, 9, 10]) {
@@ -99,6 +101,8 @@ export function orderAmphipods(initial: State): number {
             for (let hallway of [0, 1, 3, 5, 7, 9, 10]) {
                 let amphipod = state.hallway[hallway];
                 if (amphipod > -1) {
+                    // Move from a hallway space to the room stack if the room stack has only amphipods of the room
+                    // type.
                     for (let pos = 0; pos < state.rooms[amphipod].length; pos++) {
                         if (state.rooms[amphipod][pos] == -1
                             && state.isClearPath(amphipod, pos, hallway)
