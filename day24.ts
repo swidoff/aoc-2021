@@ -1,5 +1,5 @@
 import {readFileSync} from "fs";
-import _, {constant, parseInt, toString} from "lodash";
+import {parseInt} from "lodash";
 import PriorityQueue from "ts-priority-queue/src/PriorityQueue";
 
 export function readInput(): string {
@@ -43,7 +43,7 @@ export function runALU(prog: string, inp: number[], reg: number[] = [0, 0, 0, 0]
 }
 
 class State {
-    constructor(readonly digits: string, readonly requiredZ: number) {
+    constructor(readonly digits: string, readonly outputZ: number) {
     }
 
     number(): number {
@@ -71,13 +71,11 @@ class State {
 }
 
 export function findModelNumber(largest: boolean = true): string {
-    // let digitPrograms = input.split("inp w\n");
-    // digitPrograms.shift();
-    // digitPrograms = digitPrograms.map(s => "inp w\n" + s)
-    let comparator = largest ?
-        (s1: State, s2: State) => s1.compareBiggestLongest(s2) :
-        (s1: State, s2: State) => s1.compareSmallestLongest(s2);
-    let q = new PriorityQueue<State>({comparator: comparator})
+    let q = new PriorityQueue<State>({
+        comparator: largest ?
+            (s1, s2) => s1.compareBiggestLongest(s2) :
+            (s1, s2) => s1.compareSmallestLongest(s2)
+    })
     q.queue(new State("", 0));
 
     while (q.length > 0) {
@@ -86,11 +84,10 @@ export function findModelNumber(largest: boolean = true): string {
             return state.digits;
         }
 
-        let i =14 - state.digits.length - 1;
+        let i = 14 - state.digits.length - 1;
         let [c1, c2, c3] = constants[i];
-        // let program = digitPrograms[14 - state.digits.length - 1];
         for (let digit = 1; digit <= 9; digit++) {
-            let outputZ = inverseFoo(digit, state.requiredZ, c1, c2, c3)
+            let outputZ = inverseFoo(digit, state.outputZ, c1, c2, c3)
             for (let z of outputZ) {
                 q.queue(new State(digit + state.digits, z));
             }
@@ -116,41 +113,41 @@ let constants = [
     [26, -5, 1],
 ]
 
-// mul x 0  mul x 0  mul x 0  mul x 0   mul x 0  mul x 0  mul x 0   mul x 0  mul x 0  mul x 0  mul x 0  mul x 0
-// add x z  add x z  add x z  add x z   add x z  add x z  add x z   add x z  add x z  add x z  add x z  add x z
-// mod x 26 mod x 26 mod x 26 mod x 26  mod x 26 mod x 26 mod x 26  mod x 26 mod x 26 mod x 26 mod x 26 mod x 26
-// div z 1  div z 1  div z 1  div z 26  div z 1  div z 1  div z 26  div z 1  div z 26 div z 1  div z 26 div z 26
-// add x 12 add x 13 add x 12 add x -13 add x 11 add x 15 add x -14 add x 12 add x -8 add x 14 add x -9 add x -11
-// eql x w  eql x w  eql x w  eql x w   eql x w  eql x w  eql x w   eql x w  eql x w  eql x w  eql x w  eql x w
-// eql x 0  eql x 0  eql x 0  eql x 0   eql x 0  eql x 0  eql x 0   eql x 0  eql x 0  eql x 0  eql x 0  eql x 0
-// mul y 0  mul y 0  mul y 0  mul y 0   mul y 0  mul y 0  mul y 0   mul y 0  mul y 0  mul y 0  mul y 0  mul y 0
-// add y 25 add y 25 add y 25 add y 25  add y 25 add y 25 add y 25  add y 25 add y 25 add y 25 add y 25 add y 25
-// mul y x  mul y x  mul y x  mul y x   mul y x  mul y x  mul y x   mul y x  mul y x  mul y x  mul y x  mul y x
-// add y 1  add y 1  add y 1  add y 1   add y 1  add y 1  add y 1   add y 1  add y 1  add y 1  add y 1  add y 1
-// mul z y  mul z y  mul z y  mul z y   mul z y  mul z y  mul z y   mul z y  mul z y  mul z y  mul z y  mul z y
-// mul y 0  mul y 0  mul y 0  mul y 0   mul y 0  mul y 0  mul y 0   mul y 0  mul y 0  mul y 0  mul y 0  mul y 0
-// add y w  add y w  add y w  add y w   add y w  add y w  add y w   add y w  add y w  add y w  add y w  add y w
-// add y 1  add y 9  add y 11 add y 6   add y 6  add y 13 add y 13  add y 5  add y 7  add y 2  add y 10 add y 14
-// mul y x  mul y x  mul y x  mul y x   mul y x  mul y x  mul y x   mul y x  mul y x  mul y x  mul y x  mul y x
-// add z y  add z y  add z y  add z y   add z y  add z y  add z y   add z y  add z y  add z y  add z y  add z y
+// mul x 0  mul x 0  mul x 0  mul x 0   mul x 0  mul x 0  mul x 0
+// add x z  add x z  add x z  add x z   add x z  add x z  add x z
+// mod x 26 mod x 26 mod x 26 mod x 26  mod x 26 mod x 26 mod x 26
+// div z 1  div z 1  div z 1  div z 26  div z 1  div z 1  div z 26
+// add x 12 add x 13 add x 12 add x -13 add x 11 add x 15 add x -14
+// eql x w  eql x w  eql x w  eql x w   eql x w  eql x w  eql x w
+// eql x 0  eql x 0  eql x 0  eql x 0   eql x 0  eql x 0  eql x 0
+// mul y 0  mul y 0  mul y 0  mul y 0   mul y 0  mul y 0  mul y 0
+// add y 25 add y 25 add y 25 add y 25  add y 25 add y 25 add y 25
+// mul y x  mul y x  mul y x  mul y x   mul y x  mul y x  mul y x
+// add y 1  add y 1  add y 1  add y 1   add y 1  add y 1  add y 1
+// mul z y  mul z y  mul z y  mul z y   mul z y  mul z y  mul z y
+// mul y 0  mul y 0  mul y 0  mul y 0   mul y 0  mul y 0  mul y 0
+// add y w  add y w  add y w  add y w   add y w  add y w  add y w
+// add y 1  add y 9  add y 11 add y 6   add y 6  add y 13 add y 13
+// mul y x  mul y x  mul y x  mul y x   mul y x  mul y x  mul y x
+// add z y  add z y  add z y  add z y   add z y  add z y  add z y
 //
-// mul x 0  mul x 0
-// add x z  add x z
-// mod x 26 mod x 26
-// div z 26 div z 26
-// add x -6 add x -5
-// eql x w  eql x w
-// eql x 0  eql x 0
-// mul y 0  mul y 0
-// add y 25 add y 25
-// mul y x  mul y x
-// add y 1  add y 1
-// mul z y  mul z y
-// mul y 0  mul y 0
-// add y w  add y w
-// add y 7  add y 1
-// mul y x  mul y x
-// add z y  add z y
+// mul x 0  mul x 0  mul x 0  mul x 0  mul x 0   mul x 0  mul x 0
+// add x z  add x z  add x z  add x z  add x z   add x z  add x z
+// mod x 26 mod x 26 mod x 26 mod x 26 mod x 26  mod x 26 mod x 26
+// div z 1  div z 26 div z 1  div z 26 div z 26  div z 26 div z 26
+// add x 12 add x -8 add x 14 add x -9 add x -11 add x -6 add x -5
+// eql x w  eql x w  eql x w  eql x w  eql x w   eql x w  eql x w
+// eql x 0  eql x 0  eql x 0  eql x 0  eql x 0   eql x 0  eql x 0
+// mul y 0  mul y 0  mul y 0  mul y 0  mul y 0   mul y 0  mul y 0
+// add y 25 add y 25 add y 25 add y 25 add y 25  add y 25 add y 25
+// mul y x  mul y x  mul y x  mul y x  mul y x   mul y x  mul y x
+// add y 1  add y 1  add y 1  add y 1  add y 1   add y 1  add y 1
+// mul z y  mul z y  mul z y  mul z y  mul z y   mul z y  mul z y
+// mul y 0  mul y 0  mul y 0  mul y 0  mul y 0   mul y 0  mul y 0
+// add y w  add y w  add y w  add y w  add y w   add y w  add y w
+// add y 5  add y 7  add y 2  add y 10 add y 14  add y 7  add y 1
+// mul y x  mul y x  mul y x  mul y x  mul y x   mul y x  mul y x
+// add z y  add z y  add z y  add z y  add z y   add z y  add z y
 
 
 export function foo(w: number, z: number, c1: number, c2: number, c3: number): number {
@@ -162,11 +159,11 @@ export function foo(w: number, z: number, c1: number, c2: number, c3: number): n
 }
 
 // [26, -5, 1], // inZ = 6, outZ=0, w=1
-export function inverseFoo(w: number, outputZ: number, c1: number, c2: number, c3: number) : number[] {
-    let res  = [];
+export function inverseFoo(w: number, outputZ: number, c1: number, c2: number, c3: number): number[] {
+    let res = [];
 
     // Branch 1
-    for (let inZ = outputZ*c1; inZ < (outputZ+1)*c1; inZ++) {
+    for (let inZ = outputZ * c1; inZ < (outputZ + 1) * c1; inZ++) {
         if (inZ % 26 + c2 == w) {
             res.push(inZ);
         }
@@ -176,7 +173,7 @@ export function inverseFoo(w: number, outputZ: number, c1: number, c2: number, c
     // z_out = 26 * Math.floor(z_in / c1) + (w + c3)
     // (z_out - (w + c3))  = 26*Math.floor(z_in / c1)
     let rhs = (outputZ - (w + c3));
-    if (rhs >= 0 && rhs % 26 == 0 ) {
+    if (rhs >= 0 && rhs % 26 == 0) {
         rhs /= 26;
         for (let inZ = rhs * c1; inZ < (rhs + 1) * c1; inZ++) {
             if (inZ % 26 + c2 != w) {
